@@ -32,7 +32,7 @@ public class MyApp : Form
         foreach (ObjectParameter parameter in itemInstance.Parameters)
         {
             Console.WriteLine(parameter.Description);
-            container.AddRow(new Label { Text = parameter.Description + ":" }, new TextBox { Text = (parameter.GetVisibleValue() ?? "").ToString()});
+            container.AddRow(new Label { Text = parameter.Description + ":" }, new TextBox { Text = (parameter.GetVisibleValue() ?? "")});
         }
 
         container.AddRow();
