@@ -2,18 +2,10 @@ using System.Security.Cryptography;
 
 namespace BusinessLogicTryout.Actions;
 
-public class ActionObjectType
+public class ActionObjectType // тип объекта в действии
+    (int id, string name)
 {
-    private int _id;
-    private string _name;
+    public int Id { get; } = id;
 
-    public ActionObjectType(int id, string name)
-    {
-        _id = id;
-        _name = name;
-    }
-
-    public int Id => _id;
-    
-    public string Name => _name;
+    public string Name { get; } = name;
 }

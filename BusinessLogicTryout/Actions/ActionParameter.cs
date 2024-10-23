@@ -3,49 +3,27 @@ using BusinessLogicTryout.Objects;
 namespace BusinessLogicTryout.Actions;
 
 
-public class ActionParameter
+public class ActionParameter // параметр в действии
+    (int id, CParameter parameter, ActionObject? obj, bool editable = true, bool obligatory = false, bool visible = true)
 {
-    private CParameter _parameter;
-    private ActionObject _object;
-    private bool _editable;
-    private bool _obligatory;
-    private bool _visible;
-    private int _id;
-
-    public ActionParameter(int id, CParameter parameter, ActionObject obj, bool editable = true, bool obligatory = false, bool visible = true)
+    public ActionParameter(CParameter parameter, ActionObject? obj, bool editable = true, bool obligatory = false,
+        bool visible = true) : this(0, parameter, obj, editable, obligatory, visible)
     {
-        _id = id;
-        _parameter = parameter;
-        _object = obj;
-        _editable = editable;
-        _obligatory = obligatory;
-        _visible = visible;
     }
 
-    public ActionParameter(CParameter parameter, ActionObject obj, bool editable = true, bool obligatory = false,
-        bool visible = true)
+    public void SetId(int id)   // назначить Id
     {
-        _parameter = parameter;
-        _object = obj;
-        _editable = editable;
-        _obligatory = obligatory;
-        _visible = visible;
-    }
-
-    public void SetId(int id)
-    {
-        _id = id;
+        Id = id;
     }
     
-    public ActionObject Object => _object;
-    public CParameter Parameter
-    {
-        get => _parameter;
-        set => _parameter = value;
-    }
+    public ActionObject? Object { get; } = obj;  // объект, параметром которого является параметр для доступа
 
-    public bool ReadOnly => !_editable;
-    public bool Obligatory => _obligatory;
-    public bool Visible => _visible;
-    public int Id => _id;
+    public CParameter Parameter { get; set; } = parameter;  // параметр для доступа
+
+    public bool ReadOnly => !editable;  // только чтение?
+    public bool Obligatory { get; } = obligatory;   // обязателен для заполнения экземпляром?
+
+    public bool Visible { get; } = visible; // должен ли быть видимым в интерфейсе пользователя?
+
+    public int Id { get; private set; } = id;   // Id
 }

@@ -1,43 +1,34 @@
 namespace BusinessLogicTryout.Actions;
 
-public class ActionResult
+public class ActionResult   // результат выполнения действия
+    (string text)
 {
-    private string _text;
-    private List<ActionResultAutomation> _automations;
-    private int _id;
-
-    public ActionResult(string text)
+    public ActionResult(int id, string text) : this(text)
     {
-        _text = text;
-        _automations = new List<ActionResultAutomation>();
+        Id = id;
     }
 
-    public ActionResult(int id, string text)
+    public void AddAutomation(ActionResultAutomation automation)    // добавить ранее инициализированную автоматизацию
     {
-        _id = id;
-        _text = text;
-        _automations = new List<ActionResultAutomation>();
+        Automations.Add(automation);
+        Automations.Last().SetId(Automations.Count - 1);
     }
 
-    public void AddAutomation(ActionResultAutomation automation)
+    public ActionResultAutomation AddAutomation(ActionResultAutomationType type, ActionParameter? mainParameter, ActionParameter? dependParameter, ActionObject? cObject)  // добавить новую автоматизацию
     {
-        _automations.Add(automation);
-        _automations.Last().SetId(_automations.Count - 1);
+        var newAutomation = new ActionResultAutomation(type, mainParameter, dependParameter, cObject);
+        AddAutomation(newAutomation);
+        return newAutomation;
     }
 
-    public ActionResultAutomation AddAutomation(ActionResultAutomationType type, ActionParameter mainparameter, ActionParameter dependparameter, ActionObject cobject)
+    public void SetId(int id)   // присвоить Id
     {
-        _automations.Add(new ActionResultAutomation(type, mainparameter, dependparameter, cobject));
-        _automations.Last().SetId(_automations.Count - 1);
-        return _automations.Last();
+        Id = id;
     }
 
-    public void SetId(int id)
-    {
-        _id = id;
-    }
-    
-    public string Text => _text;
-    public List<ActionResultAutomation> Automations => _automations;
-    public int Id => _id;
+    public string Text { get; } = text; // видимый текст для доступа
+
+    public List<ActionResultAutomation> Automations { get; } = new List<ActionResultAutomation>();  // перечень автоматизаций
+
+    public int Id { get; private set; } // Id
 }

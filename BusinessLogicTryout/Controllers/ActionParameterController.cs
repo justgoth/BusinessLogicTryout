@@ -1,4 +1,3 @@
-using System.Collections.ObjectModel;
 using BusinessLogicTryout.Actions;
 using BusinessLogicTryout.Objects;
 using BusinessLogicTryout.Repositories;
@@ -7,13 +6,13 @@ using Eto.Forms;
 
 namespace BusinessLogicTryout.Controllers;
 
-public class ActionParameterController
+public class ActionParameterController  // контроллер ETO для параметра в действии
 {
-    private Control _controller;
-    private Label _label;
-    private ActionParameter _actionParameter;
-    private DataContext _context;
-    private ActionInstance _action;
+    private readonly Control _controller;   // собственно контроллер ETO
+    private readonly Label _label;  // описание
+    private readonly ActionParameter _actionParameter;  // DI: ссылка на параметр действия
+    private readonly DataContext _context;   // DI: контекст данных
+    private readonly ActionInstance _action; // DI: ссылка на экземпляр действия
 
     public ActionParameterController(ActionInstance action, ActionParameter actionParameter, DataContext context)
     {
@@ -27,37 +26,37 @@ public class ActionParameterController
             case 0:
                 _controller = new TextBox
                 {
-                
+                    // пока что просто пустой Edit
                 };
                 ((TextBox)_controller).TextChanged += TextChange;
                 break;
             case 1:
                 _controller = new TextBox
                 {
-
+                    // пока что просто пустой Edit
                 };
                 ((TextBox)_controller).TextChanged += TextChange;
                 break;
             case 2:
                 _controller = new TextBox
                 {
-
+                    // пока что просто пустой Edit
                 };
                 ((TextBox)_controller).TextChanged += TextChange;
                 break;
             case 3:
                 _controller = new Calendar
                 {
-
+                    // пока что просто пустой DateTimeCombo
                 };
                 break;
-            case 4:
-                List<ObjectInstance> _instances = new();
-                    _instances.AddRange(_context.Objects.Objects.Where(o => o.Type == actionParameter.Parameter.ObjectType).
+            case 4: // это - выбор из контекста объектов, соответствующих по типу
+                List<ObjectInstance> instances = new();
+                    instances.AddRange(_context.Objects.Objects.Where(o => o.Type == actionParameter.Parameter.ObjectType).
                         OrderBy(o => o.VisibleValue).ToArray());
                 _controller = new DropDown
                 {
-                    DataStore = _instances,
+                    DataStore = instances,
                     ItemTextBinding = Binding.Property<ObjectInstance, string>(o => o.VisibleValue)
                 };
                 ((DropDown)_controller).SelectedValueChanged += DropDownChange;
@@ -65,45 +64,45 @@ public class ActionParameterController
             case 5:
                 _controller = new DropDown
                 {
-
+                    // пока что - пустой ComboBox
                 };
                 break;
         }
 
-        _controller.Enabled = !actionParameter.ReadOnly;
+        _controller!.Enabled = !actionParameter.ReadOnly;
         _controller.Visible = actionParameter.Visible;
     }
 
-    public void Refresh()
+    public void Refresh()   // устанавливает значение в ETO-контроллере в соответствии с текущим значением исходного параметра
     {
-        ObjectParameter? originParameter = _action.GetParameterByActionParameter(_actionParameter).OriginParameter;
-        if (originParameter != null)
+        ObjectParameter? originParameter = _action.GetParameterByActionParameter(_actionParameter).OriginParameter; // получаем исходный экземпляр параметра
+        if (originParameter != null)    // дальше - только если он не пустой
         {
-            switch (_actionParameter.Parameter.Type.Id)
+            switch (_actionParameter.Parameter.Type.Id) // в зависимости от его типа...
             {
-                case 0:
+                case 0: // если int
                     ((TextBox)_controller).Text = originParameter.GetValue().ToString();
                     break;
-                case 1:
+                case 1: // если float
                     ((TextBox)_controller).Text = originParameter.GetValue().ToString();
                     break;
-                case 2:
+                case 2: // если String
                     ((TextBox)_controller).Text = originParameter.GetValue().ToString();
                     break;
-                case 3:
+                case 3: // если DateTime
                     ((Calendar)_controller).SelectedDate = originParameter.GetValue();
                     break;
-                case 4:
+                case 4: // если ссылка на объект
                     ((DropDown)_controller).SelectedValue = originParameter.GetValue();
                     break;
-                case 5:
+                case 5: // и ещё раз если ссылка на объект
                     ((DropDown)_controller).SelectedValue = originParameter.GetValue();
                     break;
             }
         }
     }
 
-    public void AddToContainer(DynamicLayout container)
+    public void AddToContainer(DynamicLayout container) // добавляет в ETO-контейнер
     {
         if (_controller.Visible)
         {
@@ -113,22 +112,23 @@ public class ActionParameterController
         }
     }
 
-    private void DropDownChange(object sender, EventArgs e)
+    private void DropDownChange(object? sender, EventArgs e)    // в случае смены значения для параметра, представленного ComboBox
     {
-        if (((DropDown)_controller).SelectedValue != null)
+        if (((DropDown)_controller).SelectedValue != null)  // только в том случае, если значение выбрано
         {
-            _action.Parameters.FirstOrDefault(p => p.ActionParameter == _actionParameter).ObjectParameter.SetValue(((DropDown)_controller).SelectedValue);
+            _action.Parameters.FirstOrDefault(p => p.ActionParameter == _actionParameter)!.ObjectParameter.SetValue(((DropDown)_controller).SelectedValue);
+                // сменим параметр для экземпляра действия
             foreach (ActionInstanceObjectInstance objectInstance in _action.Objects.Where(o =>
-                         o.ActionObject.SourceParameter == _actionParameter))
+                         o.ActionObject!.SourceParameter == _actionParameter))   // в цикле по всем объектам действия, для которых текущий параметр является исходным
             {
-                objectInstance.SetInstance((ObjectInstance)((DropDown)_controller).SelectedValue);
+                objectInstance.SetInstance((ObjectInstance)((DropDown)_controller).SelectedValue);  // назначим экземпляр в соответствии с выбранным вариантом...
             }
         }
     }
 
-    private void TextChange(object sender, EventArgs e)
+    private void TextChange(object? sender, EventArgs e)    // в случае смены значения для параметра, представленного Edit
     {
-        _action.Parameters.FirstOrDefault(p => p.ActionParameter == _actionParameter).ObjectParameter.SetValue(
-            ((TextBox)_controller).Text);
+        _action.Parameters.FirstOrDefault(p => p.ActionParameter == _actionParameter)!.ObjectParameter.SetValue(
+            ((TextBox)_controller).Text);   // зададим значение параметра в соответствие с введённым в Edit
     }
 }

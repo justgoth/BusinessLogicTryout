@@ -2,29 +2,22 @@ using BusinessLogicTryout.Objects;
 
 namespace BusinessLogicTryout.Actions;
 
-public class ActionInstanceObjectInstance
+public class ActionInstanceObjectInstance // экземпляр объекта в экземпляре действия
+    (ActionObject? actionObject, ObjectInstance objectInstance)
 {
-    private ActionObject _actionObject;
-    private ObjectInstance _objectInstance;
-    private ObjectInstance _originObject;
-
-    public ActionInstanceObjectInstance(ActionObject actionObject, ObjectInstance objectInstance)
+    public void SetInstance(ObjectInstance objectInstance)  // задаёт ссылку на экземпляр объекта
     {
-        _actionObject = actionObject;
-        _objectInstance = objectInstance;
+        ObjectInstance = objectInstance;
     }
 
-    public void SetInstance(ObjectInstance objectInstance)
+    public void SetOriginObject(ObjectInstance? originObject)   // задаёт ссылку на объект-прообраз 
     {
-        _objectInstance = objectInstance;
-    }
-
-    public void SetOriginObject(ObjectInstance originObject)
-    {
-        _originObject = originObject;
+        OriginObject = originObject;
     }
     
-    public ActionObject ActionObject => _actionObject;
-    public ObjectInstance ObjectInstance => _objectInstance;
-    public ObjectInstance OriginObject => _originObject;
+    public ActionObject? ActionObject { get; } = actionObject;   // объект действия для доступа
+
+    public ObjectInstance ObjectInstance { get; private set; } = objectInstance;    // экземпляр объекта для доступа
+
+    public ObjectInstance? OriginObject { get; private set; } // объект-прообраз для доступа
 }

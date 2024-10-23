@@ -1,16 +1,9 @@
 namespace BusinessLogicTryout.Actions;
 
-public class ActionResultAutomationType
+public class ActionResultAutomationType // тип автоматизации
+    (int id, string name)
 {
-    private int _id;
-    private string _name;
+    public int Id { get; } = id;    // Id
 
-    public ActionResultAutomationType(int id, string name)
-    {
-        _id = id;
-        _name = name;
-    } 
-    
-    public int Id => _id;
-    public string Name => _name;
+    public string Name { get; } = name; // наименование
 }

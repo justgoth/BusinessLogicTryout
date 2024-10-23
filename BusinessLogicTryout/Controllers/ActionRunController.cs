@@ -5,12 +5,12 @@ using Eto.Forms;
 namespace BusinessLogicTryout.Controllers;
 
 
-public class ActionRunController : Form
+public class ActionRunController : Form // контроллер интерфейса ETO для запуска действия - новая форма
 {
-    private ActionInstance _action;
-    private List<ActionObjectController> _objectControllers;
-    private List<ActionParameterController> _controllers;
-    private DataContext _context;
+    private readonly ActionInstance _action;    // экземпляр действия, создаётся новым при создании контроллера
+    private List<ActionObjectController>? _objectControllers;    // список контроллеров объектов
+    private List<ActionParameterController>? _parameterControllers;  // список контроллеров параметров
+    private readonly DataContext _context;   // DI: контекст данных
     
     
     public ActionRunController(CAction action, DataContext context)
@@ -19,46 +19,47 @@ public class ActionRunController : Form
         _context = context;
     }
 
-    public void Initialize()
+    public new void Initialize()   // инициализация, вынесена в отдельный метод преднамеренно. Идея в том, что дальше - для действий с жёстко "предопределёнными"
+        // экземплярами объекта мы сначала конструируем действие, и только потом будем вызывать инициализацию
     {
-        _controllers = new List<ActionParameterController>();
+        _parameterControllers = new List<ActionParameterController>();
         _objectControllers = new List<ActionObjectController>();
         Title = _action.Description;
         Height = 800;
         Width = 1200;
-        DynamicLayout _layout = new DynamicLayout();
-        Content = _layout;
-        foreach (ActionInstanceObjectInstance objectInstance in _action.Objects)
+        DynamicLayout layout = new DynamicLayout();
+        Content = layout;
+        foreach (ActionInstanceObjectInstance objectInstance in _action.Objects)    // в цикле по всем экземплярам объектов в действии
         {
-            if (objectInstance.ActionObject.Type == _context.CActions.ObjectTypes.GetByName("Выбирается"))
+            if (objectInstance.ActionObject!.Type == _context.CActions.ObjectTypes.GetByName("Выбирается")) // если выбирается пользователем - то добавим соответствующий контроллер
             {
                 _objectControllers.Add(new ActionObjectController(this, _action, objectInstance.ActionObject, _context));
-                _objectControllers.Last().AddToContainer(_layout);
+                _objectControllers.Last().AddToContainer(layout);
             }
         }
         
-        foreach (ActionInstanceParameterInstance parameterInstance in _action.Parameters)
+        foreach (ActionInstanceParameterInstance parameterInstance in _action.Parameters)   // в цикле по всем экземплярам параметров в действии 
         {
-            _controllers.Add(new ActionParameterController(_action, parameterInstance.ActionParameter, _context));
-            _controllers.Last().AddToContainer(_layout);
+            _parameterControllers.Add(new ActionParameterController(_action, parameterInstance.ActionParameter!, _context));    // добавим контроллер интерфейса
+            _parameterControllers.Last().AddToContainer(layout);
         }
 
         
-        _layout.BeginHorizontal();
-        foreach (ActionResult result in _action.Action.Results)
+        layout.BeginHorizontal();
+        foreach (ActionResult result in _action.Action.Results) // в цикле по всем результатам действия
         {
-            ActionResultController resultController = new ActionResultController(_action, result, _context, this);
-            resultController.AddToContainer(_layout);
+            ActionResultController resultController = new ActionResultController(_action, result, _context, this);  // создадим контроллер результата
+            resultController.AddToContainer(layout);    // и добавим его на ETO-форму
         }
-        _layout.EndHorizontal();
+        layout.EndHorizontal();
         
-        _layout.BeginHorizontal();
-        _layout.EndHorizontal();
+        layout.BeginHorizontal();
+        layout.EndHorizontal();
     }
 
-    public void RefreshParameterControllers()
+    public void RefreshParameterControllers()   // обновляет контроллеры парметров - просто в цикле дёргает рефреш для каждого
     {
-        foreach (ActionParameterController parameterController in _controllers)
+        foreach (ActionParameterController parameterController in _parameterControllers)
         {
             parameterController.Refresh();
         }

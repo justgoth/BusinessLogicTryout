@@ -1,8 +1,8 @@
 namespace BusinessLogicTryout.Actions;
 
-public class ActionResultAutomationTypes
+public class ActionResultAutomationTypes    // список доступных типов автоматизаций
 {
-    private List<ActionResultAutomationType> _types;
+    private readonly List<ActionResultAutomationType> _types;
 
     public ActionResultAutomationTypes()
     {
@@ -13,23 +13,23 @@ public class ActionResultAutomationTypes
         AddType(3, "Завершить действие");
     }
 
-    public void AddType(ActionResultAutomationType type)
+    public void AddType(ActionResultAutomationType type)    // добавить ранее инициализированный тип
     {
         _types.Add(type);
     }
 
-    public void AddType(int id, string name)
+    private void AddType(int id, string name)   // добавить новый тип
     {
         _types.Add(new ActionResultAutomationType(id, name));
     }
 
-    public ActionResultAutomationType GetById(int id)
+    public ActionResultAutomationType GetById(int id)   // получить по Id
     {
-        return _types.FirstOrDefault(t => t.Id == id);
+        return _types.FirstOrDefault(t => t.Id == id)!;
     }
 
-    public ActionResultAutomationType GetByName(string name)
+    public ActionResultAutomationType GetByName(string name)    // получить по наименованию
     {
-        return _types.FirstOrDefault(t => t.Name == name);
+        return _types.FirstOrDefault(t => t.Name == name)!;
     }
 }

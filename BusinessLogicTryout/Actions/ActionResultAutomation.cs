@@ -1,41 +1,28 @@
 namespace BusinessLogicTryout.Actions;
 
-public class ActionResultAutomation
+public class ActionResultAutomation // автоматизация
+    (int id,
+    ActionResultAutomationType type,
+    ActionParameter? mainParameter,
+    ActionParameter? dependParameter,
+    ActionObject? cObject = null)
 {
-    private ActionResultAutomationType _type;
-    private ActionParameter _mainparameter;
-    private ActionParameter _dependparameter;
-    private ActionObject _object;
-    private int _id;
+    public ActionResultAutomation(ActionResultAutomationType type, ActionParameter? mainParameter = null, ActionParameter? dependParameter = null, ActionObject? cObject = null) : this(0, type, mainParameter, dependParameter, cObject)
+    {
+    }
 
-    public ActionResultAutomation(ActionResultAutomationType type, ActionParameter mainparameter = null, ActionParameter dependparameter = null, ActionObject cobject = null)
+    public void SetId(int id)   // назначить Id
     {
-        _type = type;
-        _mainparameter = mainparameter;
-        _dependparameter = dependparameter;
-        _object = cobject;
-    }
-    public ActionResultAutomation(int id, ActionResultAutomationType type, ActionParameter mainparameter, ActionParameter dependparameter, ActionObject cobject = null)
-    {
-        _type = type;
-        _mainparameter = mainparameter;
-        _dependparameter = dependparameter;
-        _object = cobject;
-        _id = id;
-    }
-    public void SetId(int id)
-    {
-        _id = id;
+        Id = id;
     }
     
-    public ActionParameter MainParameter
-    {
-        get => _mainparameter;
-        set => _mainparameter = value;
-    }
+    public ActionParameter? MainParameter { get; set; } = mainParameter;    // параметр, который будет принимать значение
 
-    public ActionParameter DependParameter => _dependparameter;
-    public ActionObject Object => _object;
-    public ActionResultAutomationType Type => _type;
-    public int Id => _id;
+    public ActionParameter? DependParameter { get; } = dependParameter; // параметр, значение которого будем принимать
+
+    public ActionObject? Object { get; } = cObject; // связь с объектом в действии
+
+    public ActionResultAutomationType Type { get; } = type; // тип автоматизации
+
+    public int Id { get; private set; } = id;   // Id
 }

@@ -2,43 +2,28 @@ using BusinessLogicTryout.Objects;
 
 namespace BusinessLogicTryout.Actions;
 
-public class ActionObject
+public class ActionObject   // объект в действии
+    (int id, CObject obj, ActionObjectType type)
 {
-    private CObject _object;
-    private ActionObjectType _type;
-    private int _id;
-    private ActionParameter _sourceparameter;
-
-    public ActionObject(int id, CObject obj, ActionObjectType type)
+    public ActionObject(CObject obj, ActionObjectType type) : this(0, obj, type)
     {
-        _id = id;
-        _object = obj;
-        _type = type;
     }
 
-    public ActionObject(CObject obj, ActionObjectType type)
+    public void SetId(int id)   // назначить уникальный идентификатор
     {
-        _object = obj;
-        _type = type;
+        Id = id;
     }
 
-    public void SetId(int id)
+    public void AddParameterLink(ActionParameter parameter) // связать с параметром действия
     {
-        _id = id;
-    }
-
-    public void AddParameterLink(ActionParameter parameter)
-    {
-        _sourceparameter = parameter;
+        SourceParameter = parameter;
     }
     
-    public CObject Object => _object;
-    public ActionObjectType Type => _type;
-    public ActionParameter SourceParameter
-    {
-        get => _sourceparameter;
-        set => _sourceparameter = value;
-    }
+    public CObject Object { get; } = obj;   // тип объекта для доступа
 
-    public int Id => _id;
+    public ActionObjectType Type { get; } = type;   // тип объекта в действии для доступа
+
+    public ActionParameter? SourceParameter { get; set; }   // ссылка на связанный параметр
+
+    public int Id { get; private set; } = id;   // Id для доступа
 }
