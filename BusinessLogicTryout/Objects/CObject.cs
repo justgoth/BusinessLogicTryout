@@ -5,14 +5,13 @@ public class CObject // объект
                                          // описание
 {
     private int _id;    // id
-    private readonly List<CObjectLink> _linkedObjects = [];   // связанные объекты
     private readonly List<CParameter> _parameters = [];   // параметры
+    private readonly CObject? _parent;
     private CParameter? _visiblevalueparameter;  // параметр, который определяет, что выводится как обозначение экземпляра объекта при выборе объекта
 
     public CObject(CObject parent, string name, string description) : this(name, description)
     {
-        _linkedObjects.Add(new CObjectLink(LinkTypes.Parent, parent));
-        _parameters.AddRange(parent.Parameters);
+        _parent = parent;
     }
 
     public void AddParameter(CParameter parameter)  // добавляет новый параметр

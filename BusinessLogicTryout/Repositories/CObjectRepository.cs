@@ -6,10 +6,12 @@ namespace BusinessLogicTryout.Repositories;
 public class CObjectRepository
 {
     private ObservableCollection<CObject> _objects;
+    private LinkTypes _linkTypes;
 
     public CObjectRepository()
     {
         _objects = new ObservableCollection<CObject>();
+        _linkTypes = new LinkTypes();
     }
 
     public CObject AddNewObject(string name, string description)
@@ -19,7 +21,7 @@ public class CObjectRepository
         return _objects.Last();
     }
 
-    public CObject AddNewObject(string name, string description, CObject parent)
+    public CObject AddNewObject(string name, string description, CObject? parent)
     {
         _objects.Add(new CObject(parent, name, description));
         _objects.Last().SetId(_objects.Count == 1 ? 0 : (_objects[^2].Id + 1));

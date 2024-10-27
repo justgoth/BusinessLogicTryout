@@ -204,3 +204,4 @@
 /home/justgoth/RiderProjects/CustomizedInterfaceTryout/BusinessLogicTryout/obj/Debug/net8.0/BusinessLogicTryout.pdb
 /home/justgoth/RiderProjects/CustomizedInterfaceTryout/BusinessLogicTryout/obj/Debug/net8.0/BusinessLogicTryout.genruntimeconfig.cache
 /home/justgoth/RiderProjects/CustomizedInterfaceTryout/BusinessLogicTryout/obj/Debug/net8.0/ref/BusinessLogicTryout.dll
+/home/justgoth/RiderProjects/CustomizedInterfaceTryout/BusinessLogicTryout/obj/Debug/net8.0/BusinessLogicTryout.sourcelink.json
