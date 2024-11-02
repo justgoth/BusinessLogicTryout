@@ -6,12 +6,7 @@ using BusinessLogicTryout.Objects;
 
 public class ObjectInstanceRepository
 {
-    private ObservableCollection<ObjectInstance> _objects;
-
-    public ObjectInstanceRepository()
-    {
-        _objects = new ObservableCollection<ObjectInstance>();
-    }
+    private readonly ObservableCollection<ObjectInstance> _objects = new();
 
     public ObjectInstance AddNewObjectInstance(CObject objecttype)
     {

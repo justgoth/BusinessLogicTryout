@@ -25,11 +25,11 @@ public class ActionResultAutomationTypes    // список доступных �
 
     public ActionResultAutomationType GetById(int id)   // получить по Id
     {
-        return _types.FirstOrDefault(t => t.Id == id)!;
+        return _types.Find(t => t.Id == id)!;
     }
 
     public ActionResultAutomationType GetByName(string name)    // получить по наименованию
     {
-        return _types.FirstOrDefault(t => t.Name == name)!;
+        return _types.Find(t => t.Name == name)!;
     }
 }

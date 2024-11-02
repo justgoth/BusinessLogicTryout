@@ -18,12 +18,12 @@ public class ActionObjectTypes  // типы объектов в действии
 
     public ActionObjectType GetById(int id) // поиск по Id
     {
-        return Types.FirstOrDefault(x => x.Id == id)!;
+        return Types.Find(x => x.Id == id)!;
     }
 
     public ActionObjectType GetByName(string name)  // поиск по наименованию
     {
-        return Types.FirstOrDefault(x => x.Name == name)!;
+        return Types.Find(x => x.Name == name)!;
     }
 
     private List<ActionObjectType> Types { get; }   // список доступных типов

@@ -1,10 +1,13 @@
-﻿using Eto.Forms;
-using BusinessLogicTryout.Controllers;
+﻿using BusinessLogicTryout.Controllers;
+using Eto.Forms;
+
+namespace BusinessLogicTryout;
 
 public class MyApp : Form
 {
-    public MainFormController MainForm;
-    public MyApp()
+    private readonly MainFormController MainForm;
+
+    private MyApp()
     {
         MainForm = new MainFormController();
     }

@@ -4,11 +4,11 @@ namespace BusinessLogicTryout.Objects;
 
 public class ObjectParameter(CParameter parametertype)
 {
-    private List<int> _integervalue = new();  // целочисленное значение
-    private List<float> _floatingvalue = new();   // нецелочисленное значение
-    private List<string> _stringvalue = new();   // строковое значение
-    private List<DateTime> _datetimevalue = new();    // значение дата-время
-    private List<ObjectInstance> _objectvalue = new();   // значение - ссылка на экземпляр объекта
+    private readonly List<int> _integervalue = new();  // целочисленное значение
+    private readonly List<float> _floatingvalue = new();   // нецелочисленное значение
+    private readonly List<string> _stringvalue = new();   // строковое значение
+    private readonly List<DateTime> _datetimevalue = new();    // значение дата-время
+    private readonly List<ObjectInstance> _objectvalue = new();   // значение - ссылка на экземпляр объекта
 
     public void SetValue(dynamic value) // задание значения
     {
@@ -126,30 +126,30 @@ public class ObjectParameter(CParameter parametertype)
                 if (_floatingvalue.Count == 0) return "0";
                 return _floatingvalue[0].ToString(CultureInfo.InvariantCulture) + ((_floatingvalue.Count == 1)
                         ? ""
-                        : " и ещё " + (_floatingvalue.Count - 1).ToString());
+                        : " и ещё " + (_floatingvalue.Count - 1).ToString() + "..");
             case 2:
                 if (_stringvalue.Count == 0) return "Не задано";
                 return _stringvalue[0]  + ((_stringvalue.Count == 1)
                         ? ""
-                        : " и ещё " + (_stringvalue.Count - 1).ToString());
+                        : " и ещё " + (_stringvalue.Count - 1).ToString() + "..");
             case 3:
                 if (_datetimevalue.Count == 0) return "Не задано";
                 return _datetimevalue[0].ToString(CultureInfo.InvariantCulture) + ((_datetimevalue.Count == 1)
                         ? ""
-                        : " и ещё " + (_datetimevalue.Count - 1).ToString());
+                        : " и ещё " + (_datetimevalue.Count - 1).ToString() + "..");
             case 4:
                 if (_objectvalue.Count > 0)
                     return (_objectvalue[0].GetParameterValue(_objectvalue[0].Type.VisibleValueParameter)?.ToString() ?? "NULL") +
                            ((_objectvalue.Count == 1)
                            ? ""
-                           : " и ещё " + (_objectvalue.Count - 1).ToString());
+                           : " и ещё " + (_objectvalue.Count - 1).ToString() + "..");
                 else return "Не задано";
             case 5:
                 if (_objectvalue.Count > 0)
                     return (_objectvalue[0].GetParameterValue(_objectvalue[0].Type.VisibleValueParameter)?.ToString() ?? "NULL") +
                            ((_objectvalue.Count == 1)
                                ? ""
-                               : " и ещё " + (_objectvalue.Count - 1).ToString());
+                               : " и ещё " + (_objectvalue.Count - 1).ToString() + "..");
                 else return "Не задано";
         }
         return "ОШИБКА!";

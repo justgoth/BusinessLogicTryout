@@ -22,12 +22,12 @@ public class CObject // объект
     public void AddVisibleValueParameter(CParameter parameter)  // добавляет новый параметр и назначает его как вывод обозначения объекта
     {
         _parameters.Add(parameter);
-        _visiblevalueparameter = _parameters.FirstOrDefault(p => p.Name == parameter.Name);
+        _visiblevalueparameter = _parameters.Find(p => p.Name == parameter.Name);
     }
 
     public CParameter GetParameterByName(string parameterName)   // возвращает параметр по имени
     {
-        return _parameters.FirstOrDefault(p => p.Name == parameterName)!;
+        return _parameters.Find(p => p.Name == parameterName)!;
     }
     
     public List<CParameter> Parameters => _parameters;  // параметры для доступа

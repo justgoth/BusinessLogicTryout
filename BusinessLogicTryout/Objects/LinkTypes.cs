@@ -9,6 +9,8 @@ public class LinkTypes // Типы связей между объектами
         AddType(1, "Связан");
         AddType(2, "Родитель");
         AddType(3, "Ребёнок");
+        AddType(4, "Входит в");
+        AddType(5, "Содержит");
     }
 
     private void AddType(int id, string name)   // добавляет новый тип

@@ -104,11 +104,22 @@ public class MainFormController : Form
         // тип объекта - подразделение
         CObject departmentObject = _context.CObjects.AddNewObject("Отдел", "Отдел (элемент справочника)");
         departmentObject.AddVisibleValueParameter(_context.CParameters.AddNewParameter("Наименование", "Наименование отдела", _context.CParameters.Types.GetByName("Строка")));
+        CParameter departmentParentParameter = _context.CParameters.AddNewParameter("Нижестоящее подразделение",
+            "Нижестоящее подразделение",
+            _context.CParameters.Types.GetByName("Выбор из списка"),
+            departmentObject,
+            _context.CParameters.LinkTypes.GetByName("Содержит"), true);
+        departmentObject.AddParameter(departmentParentParameter);
         // и 2 подразделения
         ObjectInstance dep1 = _context.Objects.AddNewObjectInstance(departmentObject);
         dep1.SetParameterValueByName("Наименование", "Бухгалтерия");
         ObjectInstance dep2 = _context.Objects.AddNewObjectInstance(departmentObject);
         dep2.SetParameterValueByName("Наименование", "Юридический отдел");
+        // а теперь добавим ещё подразделения и свяжем их в иерархию
+        ObjectInstance dep3 = _context.Objects.AddNewObjectInstance(departmentObject);
+        dep3.SetParameterValueByName("Наименование", "Управляющая компания");
+        dep3.SetParameterValueByName("Нижестоящее подразделение", dep1);
+        dep3.SetParameterValueByName("Нижестоящее подразделение", dep2);
 
         // тип объекта - должность
         CObject positionObject = _context.CObjects.AddNewObject("Должность", "Должность (элемент справочника)");

@@ -23,12 +23,12 @@ public class ParameterTypes // набор доступных типов пара
 
     public ParameterType? GetById(int id) // получить тип по id
     {
-        return _types.FirstOrDefault(t => t.Id == id);
+        return _types.Find(t => t.Id == id);
     }
 
     public ParameterType? GetByName(string name) // получить тип по наименованию
     {
-        return _types.FirstOrDefault(t => t.Name == name);
+        return _types.Find(t => t.Name == name);
     }
     
     public List<ParameterType> Types => _types; // список типов для доступа

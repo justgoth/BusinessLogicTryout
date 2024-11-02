@@ -9,12 +9,12 @@ public class ActionObjectController // контроллер интерфейса
 {
     private readonly Control _controller;    // собственно контроллер ETO
     private readonly Label _label;   // описание
-    private readonly ActionObject? _actionObject;    // DI: связь с объектом в действии
+    private readonly ActionObject _actionObject;    // DI: связь с объектом в действии
     private readonly DataContext _context;   // DI: контекст данных
     private readonly ActionInstance _action; // DI: ссылка на экземпляр действия
     private readonly ActionRunController _parent;    // DI: ссылка на контроллер интерфейса ETO для действия
 
-    public ActionObjectController(ActionRunController parent, ActionInstance action, ActionObject? obj, DataContext context)
+    public ActionObjectController(ActionRunController parent, ActionInstance action, ActionObject obj, DataContext context)
     {
         _parent = parent;
         _action = action;
@@ -47,6 +47,6 @@ public class ActionObjectController // контроллер интерфейса
     {
         _action.SetObjectInstance(_action.GetObjectByActionObject(_actionObject), 
             (ObjectInstance)((DropDown)_controller).SelectedValue); // зададим экземпляр для действия
-        _parent.RefreshParameterControllers();  // обновим контроллеры параметров (т.к. они могут зависеть от экземпляра объекта)
+        _parent.RefreshParameterControllers();  // Обновим контроллеры параметров (т.к. они могут зависеть от экземпляра объекта)
     }
 }

@@ -116,19 +116,13 @@ public class ActionParameterController  // контроллер ETO для па�
     {
         if (((DropDown)_controller).SelectedValue != null)  // только в том случае, если значение выбрано
         {
-            _action.Parameters.FirstOrDefault(p => p.ActionParameter == _actionParameter)!.ObjectParameter.SetValue(((DropDown)_controller).SelectedValue);
-                // сменим параметр для экземпляра действия
-            foreach (ActionInstanceObjectInstance objectInstance in _action.Objects.Where(o =>
-                         o.ActionObject!.SourceParameter == _actionParameter))   // в цикле по всем объектам действия, для которых текущий параметр является исходным
-            {
-                objectInstance.SetInstance((ObjectInstance)((DropDown)_controller).SelectedValue);  // назначим экземпляр в соответствии с выбранным вариантом...
-            }
+            _action.SetParameterValue(_actionParameter, ((DropDown)_controller).SelectedValue); // сменим параметр для экземпляра действия
+            _action.SetObjectInstanceOnParameterValueChange(_actionParameter, (ObjectInstance)(((DropDown)_controller).SelectedValue)); // обновим все зависимые объекты
         }
     }
 
     private void TextChange(object? sender, EventArgs e)    // в случае смены значения для параметра, представленного Edit
     {
-        _action.Parameters.FirstOrDefault(p => p.ActionParameter == _actionParameter)!.ObjectParameter.SetValue(
-            ((TextBox)_controller).Text);   // зададим значение параметра в соответствие с введённым в Edit
+        _action.SetParameterValue(_actionParameter, ((TextBox)_controller).Text);    // зададим значение параметра в соответствие с введённым в Edit
     }
 }

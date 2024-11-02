@@ -44,7 +44,7 @@ public class ObjectInstance // экземпляр объекта
     public void SetParameterValueByName(string name, dynamic value, bool clean = false) // задать значение параметру по наименованию
     {
         // приведём name к CParameter
-        CParameter changingParameter = _parameters.FirstOrDefault(c => c.Type?.Name == name)?.Type;
+        CParameter changingParameter = _parameters.Find(c => c.Type?.Name == name)?.Type;
         if (changingParameter != null)
         {
             SetParameterValue(changingParameter, value);
@@ -53,13 +53,13 @@ public class ObjectInstance // экземпляр объекта
 
     public dynamic? GetParameterValue(CParameter? parameterToGet)  // получить значение параметра по параметру
     {
-        ObjectParameter? parameter = _parameters.FirstOrDefault(c => c.Type == parameterToGet);
+        ObjectParameter? parameter = _parameters.Find(c => c.Type == parameterToGet);
         return parameter?.GetValue();
     }
 
     public ObjectParameter? GetParameterByType(CParameter type)  // получить параметр определённого типа
     {
-        return _parameters.FirstOrDefault(c => c.Type == type)!;
+        return _parameters.Find(c => c.Type == type)!;
     }
 
     public List<ObjectInstance> GetLinkedObjects(LinkType linkType) // возвращает список связанных объектов по типу связи
